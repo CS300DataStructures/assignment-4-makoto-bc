@@ -26,7 +26,7 @@ public:
 
 	SLLString(const SLLString& other);
 
-	SLLString(SLLString&& string)
+	SLLString(SLLString&& string) noexcept
 		: SLLString() {
 		std::swap(head, string.head);
 		std::swap(_size, string._size);

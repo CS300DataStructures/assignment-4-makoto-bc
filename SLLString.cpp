@@ -50,7 +50,7 @@ int SLLString::findSubstring(const SLLString& substring) {
 			}
 
 			if (substringIndex == substring._size - 1) {
-				return i;
+				return static_cast<int>(i);
 			}
 		}
 	}
@@ -107,7 +107,10 @@ const SLLString::Node& SLLString::nodeAt(size_t index) const {
 }
 
 char& SLLString::operator[](const int index) {
-	return nodeAt(index).value;
+	if (index < 0) {
+		throw std::out_of_range("index is out of range");
+	}
+	return nodeAt(static_cast<size_t>(index)).value;
 }
 
 char SLLString::operator[](size_t index) const {
@@ -143,7 +146,7 @@ SLLString& SLLString::operator+=(const SLLString& rhs) {
 
 	SLLString copy = rhs;
 	nodeAt(_size - 1).next = std::unique_ptr<Node>(copy.head);
-	copy.head = nullptr;
+	copy.head = nullptr; // Prevent double free
 	_size += rhs._size;
 	return *this;
 }
