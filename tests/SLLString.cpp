@@ -169,7 +169,63 @@ TEST(SLLString, remove) {
 	}
 
 	EXPECT_THROW(SLLString().remove(0), std::out_of_range);
-	EXPECT_THROW(SLLString("a").remove(2), std::out_of_range);
+	EXPECT_THROW(SLLString("a").remove(1), std::out_of_range);
+}
+
+TEST(SLLString, erase) {
+	struct Test {
+		SLLString s;
+		char c;
+		SLLString expected;
+	};
+
+	std::vector<Test> tests {
+		{ // 0
+			{""},
+			'a',
+			{""},
+		},
+		{ // 1
+			{"a"},
+			'a',
+			{""},
+		},
+		{ // 2
+			{"b"},
+			'a',
+			{"b"},
+		},
+		{ // 3
+			{"aa"},
+			'a',
+			{""},
+		},
+		{ // 4
+			{"ab"},
+			'a',
+			{"b"},
+		},
+		{ // 5
+			{"ba"},
+			'a',
+			{"b"},
+		},
+		{ // 6
+			{"aba"},
+			'a',
+			{"b"},
+		},
+		{ // 6
+			{"aba"},
+			'b',
+			{"aa"},
+		},
+	};
+
+	for (size_t i = 0; i < tests.size(); ++i) {
+		tests[i].s.erase(tests[i].c);
+		EXPECT_EQ(tests[i].s, tests[i].expected) << i;
+	}
 }
 
 TEST(SLLString, nodeAt) {
