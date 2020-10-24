@@ -50,7 +50,9 @@ public:
 
 	void insert(size_t index, char c);
 
-//	void erase(char c);
+	void remove(size_t index);
+
+	void erase(char c);
 
 	Node& nodeAt(size_t index) {
 		return const_cast<Node&>(const_cast<const SLLString&>(*this).nodeAt(index));

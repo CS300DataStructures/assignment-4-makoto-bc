@@ -46,6 +46,13 @@ TEST(SLLString, copyConstructor) {
 	}
 }
 
+TEST(SLLString, moveConstructor) {
+	SLLString original("a");
+	SLLString newStr = std::move(original);
+	EXPECT_EQ(newStr, SLLString("a"));
+	EXPECT_EQ(original, SLLString()); // NOLINT(bugprone-use-after-move)
+}
+
 TEST(SLLString, findSubstring) {
 	struct Test {
 		SLLString s;
@@ -131,11 +138,38 @@ TEST(SLLString, findSubstring) {
 	}
 }
 
-TEST(SLLString, moveConstructor) {
-	SLLString original("a");
-	SLLString newStr = std::move(original);
-	EXPECT_EQ(newStr, SLLString("a"));
-	EXPECT_EQ(original, SLLString()); // NOLINT(bugprone-use-after-move)
+TEST(SLLString, remove) {
+	struct Test {
+		SLLString s;
+		size_t index;
+		SLLString expected;
+	};
+
+	std::vector<Test> tests {
+		{
+			{"a"},
+			0,
+			{""},
+		},
+		{
+			{"ab"},
+			0,
+			{"b"},
+		},
+		{
+			{"ab"},
+			1,
+			{"a"},
+		},
+	};
+
+	for (size_t i = 0; i < tests.size(); ++i) {
+		tests[i].s.remove(tests[i].index);
+		EXPECT_EQ(tests[i].s, tests[i].expected) << i;
+	}
+
+	EXPECT_THROW(SLLString().remove(0), std::out_of_range);
+	EXPECT_THROW(SLLString("a").remove(2), std::out_of_range);
 }
 
 TEST(SLLString, nodeAt) {

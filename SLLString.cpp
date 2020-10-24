@@ -67,6 +67,25 @@ void SLLString::insert(size_t index, char c) {
 	++_size;
 }
 
+void SLLString::remove(size_t index) {
+	if (_size == 0) {
+		throw std::out_of_range("index is out of range");
+	}
+
+	if (index == 0) {
+		Node* tmp = head;
+		head = head->next.release();
+		delete tmp;
+	} else {
+		Node& previous = nodeAt(index - 1);
+		previous.next = std::move(previous.next->next);
+	}
+	--_size;
+}
+
+void SLLString::erase(char c) {
+}
+
 const SLLString::Node& SLLString::nodeAt(size_t index) const {
 	if (index >= _size) {
 		throw std::out_of_range("index is out of range");
