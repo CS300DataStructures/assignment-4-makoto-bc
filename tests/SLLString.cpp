@@ -46,6 +46,91 @@ TEST(SLLString, copyConstructor) {
 	}
 }
 
+TEST(SLLString, findSubstring) {
+	struct Test {
+		SLLString s;
+		SLLString substring;
+		int expected;
+	};
+
+	std::vector<Test> tests {
+		{ // 0
+			{""},
+			{""},
+			0,
+		},
+		{ // 1
+			{"a"},
+			{""},
+			0,
+		},
+		{ // 2
+			{"a"},
+			{"a"},
+			0,
+		},
+		{ // 3
+			{""},
+			{"a"},
+			-1,
+		},
+		{ // 4
+			{"a"},
+			{"b"},
+			-1,
+		},
+		{ // 5
+			{"aa"},
+			{"a"},
+			0,
+		},
+		{ // 6
+			{"ab"},
+			{"b"},
+			1,
+		},
+		{ // 7
+			{"abc"},
+			{"c"},
+			2,
+		},
+		{ // 8
+			{"abc"},
+			{"ab"},
+			0,
+		},
+		{ // 9
+			{"abc"},
+			{"bc"},
+			1,
+		},
+		{ // 10
+			{"abc"},
+			{"cd"},
+			-1,
+		},
+		{ // 11
+			{"abc"},
+			{"ba"},
+			-1,
+		},
+		{ // 12
+			{"ab"},
+			{""},
+			0,
+		},
+		{ // 13
+			{""},
+			{"ab"},
+			-1,
+		},
+	};
+
+	for (size_t i = 0; i < tests.size(); ++i) {
+		EXPECT_EQ(tests[i].s.findSubstring(tests[i].substring), tests[i].expected) << i;
+	}
+}
+
 TEST(SLLString, moveConstructor) {
 	SLLString original("a");
 	SLLString newStr = std::move(original);

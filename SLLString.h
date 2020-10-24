@@ -46,7 +46,7 @@ public:
 		return _size;
 	}
 
-//	int findSubstring(const SLLString& substring);
+	int findSubstring(const SLLString& substring);
 
 	void insert(size_t index, char c);
 
@@ -60,7 +60,7 @@ public:
 
 	char& operator[](const int index); // NOLINT(readability-avoid-const-params-in-decls)
 
-	const char& operator[](size_t index) const;
+	char operator[](size_t index) const;
 
 	SLLString& operator=(const SLLString& other);
 

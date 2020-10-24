@@ -37,6 +37,26 @@ SLLString::SLLString(const SLLString& other) {
 	}
 }
 
+int SLLString::findSubstring(const SLLString& substring) {
+	if (substring._size == 0) {
+		return 0;
+	}
+
+	for (size_t i = 0; i < _size; ++i) {
+		for (size_t substringIndex = 0; substringIndex < _size - i; ++substringIndex) {
+			if (nodeAt(i + substringIndex).value != substring[substringIndex]) {
+				break;
+			}
+
+			if (substringIndex == substring._size - 1) {
+				return i;
+			}
+		}
+	}
+
+	return -1;
+}
+
 void SLLString::insert(size_t index, char c) {
 	if (index == 0) {
 		head = new Node(c, std::unique_ptr<Node>(head));
@@ -60,23 +80,11 @@ const SLLString::Node& SLLString::nodeAt(size_t index) const {
 }
 
 char& SLLString::operator[](const int index) {
-	if (index < 0) {
-		throw std::out_of_range("index is out of range");
-	}
-
-	return const_cast<char&>(const_cast<const SLLString&>(*this)[static_cast<size_t>(index)]);
+	return nodeAt(index).value;
 }
 
-const char& SLLString::operator[](size_t index) const {
-	if (index >= _size) {
-		throw std::out_of_range("index is out of range");
-	}
-
-	Node* current = head;
-	for (size_t i = 0; i < index; ++i) {
-		current = current->next.get();
-	}
-	return current->value;
+char SLLString::operator[](size_t index) const {
+	return nodeAt(index).value;
 }
 
 SLLString& SLLString::operator=(const SLLString& other) {
