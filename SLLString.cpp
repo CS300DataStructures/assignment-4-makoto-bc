@@ -14,8 +14,8 @@ SLLString::SLLString(const std::string& str)
 	++iter;
 
 	for (; iter < str.cend(); ++iter) {
-		current->next = std::make_unique<Node>(*iter, nullptr);
-		current = current->next.get();
+		current->next_ = std::make_unique<Node>(*iter, nullptr);
+		current = current->next_.get();
 	}
 }
 
@@ -29,12 +29,12 @@ SLLString::SLLString(const SLLString& other) {
 	Node* strCurrent = other.head;
 	head = new Node(strCurrent->value, nullptr);
 	Node* current = head;
-	strCurrent = strCurrent->next.get();
+	strCurrent = strCurrent->next_.get();
 
 	for (size_t i = 0; i < other._size - 1; ++i) {
-		current->next = std::make_unique<Node>(strCurrent->value, nullptr);
-		current = current->next.get();
-		strCurrent = strCurrent->next.get();
+		current->next_ = std::make_unique<Node>(strCurrent->value, nullptr);
+		current = current->next_.get();
+		strCurrent = strCurrent->next_.get();
 	}
 }
 
@@ -63,7 +63,7 @@ void SLLString::insert(size_t index, char c) {
 		head = new Node(c, std::unique_ptr<Node>(head));
 	} else {
 		Node& previous = nodeAt(index - 1);
-		previous.next = std::make_unique<Node>(c, std::move(previous.next));
+		previous.next_ = std::make_unique<Node>(c, std::move(previous.next_));
 	}
 	++_size;
 }
@@ -75,11 +75,11 @@ void SLLString::remove(size_t index) {
 
 	if (index == 0) {
 		Node* tmp = head;
-		head = head->next.release();
+		head = head->next_.release();
 		delete tmp;
 	} else {
 		Node& previous = nodeAt(index - 1);
-		previous.next = std::move(previous.next->next);
+		previous.next_ = std::move(previous.next_->next_);
 	}
 	--_size;
 }
@@ -101,7 +101,7 @@ const SLLString::Node& SLLString::nodeAt(size_t index) const {
 
 	Node* current = head;
 	for (size_t i = 0; i < index; ++i) {
-		current = current->next.get();
+		current = current->next_.get();
 	}
 	return *current;
 }
@@ -145,7 +145,7 @@ SLLString& SLLString::operator+=(const SLLString& rhs) {
 	}
 
 	SLLString copy = rhs;
-	nodeAt(_size - 1).next = std::unique_ptr<Node>(copy.head);
+	nodeAt(_size - 1).next_ = std::unique_ptr<Node>(copy.head);
 	copy.head = nullptr; // Prevent double free
 	_size += rhs._size;
 	return *this;

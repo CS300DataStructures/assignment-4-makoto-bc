@@ -1,3 +1,8 @@
+// assignment-4
+// Makoto Emura
+// 10/24/2020
+// Linked list string
+
 #include <iostream>
 #include "SLLString.h"
 

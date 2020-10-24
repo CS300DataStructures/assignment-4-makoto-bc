@@ -5,16 +5,19 @@
 #include <ostream>
 #include <memory>
 
+// String implementation using a linked list.
 class SLLString {
 private:
 	class Node {
 	public:
 		Node(char value, std::unique_ptr<Node> next)
 			: value(value)
-			  , next(std::move(next)) {}
+			  , next(next.get())
+			  , next_(std::move(next)) {}
 
 		char value;
-		std::unique_ptr<Node> next;
+		Node* next;
+		std::unique_ptr<Node> next_;
 	};
 
 public:
@@ -22,7 +25,10 @@ public:
 		: head(nullptr)
 		  , _size(0) {}
 
-	SLLString(const std::string& str); // NOLINT(google-explicit-constructor)
+	/**
+	 * Copies all chars from other.
+	 */
+	SLLString(const std::string& other); // NOLINT(google-explicit-constructor)
 
 	SLLString(const SLLString& other);
 
@@ -36,9 +42,13 @@ public:
 		delete head;
 	}
 
+	/**
+	 * Size of this string.
+	 * @see size()
+	 */
 	int length() { // NOLINT(readability-make-member-function-const)
 		if (_size > std::numeric_limits<int>::max()) {
-			throw std::out_of_range("_size is larger than int");
+			throw std::out_of_range("_size is larger than max int");
 		}
 		return static_cast<int>(_size);
 	}
@@ -47,18 +57,40 @@ public:
 		return _size;
 	}
 
+	/**
+	 * @return Index of substring in this string if it exists, or -1 if it does not exist.
+	 */
 	int findSubstring(const SLLString& substring);
 
+	/**
+	 * Inserts c at index.
+	 * @throws std::out_of_range index is out of range
+	 */
 	void insert(size_t index, char c);
 
+	/**
+	 * Removes char at index.
+	 * @throws std::out_of_range index is out of range
+	 */
 	void remove(size_t index);
 
+	/**
+	 * Removes all occurrences of c.
+	 */
 	void erase(char c);
 
+	/**
+	 * @return Node at index
+	 * @throws std::out_of_range index is out of range
+	 */
 	Node& nodeAt(size_t index) {
 		return const_cast<Node&>(const_cast<const SLLString&>(*this).nodeAt(index));
 	}
 
+	/**
+	 * @return Node at index
+	 * @throws std::out_of_range index is out of range
+	 */
 	const Node& nodeAt(size_t index) const;
 
 	char& operator[](const int index); // NOLINT(readability-avoid-const-params-in-decls)
@@ -69,6 +101,10 @@ public:
 
 	bool operator==(const SLLString& rhs) const;
 
+	/**
+	 * Concatenates other to the end of this string.
+	 * @return this
+	 */
 	SLLString& operator+=(const SLLString& other);
 
 	friend std::ostream& operator<<(std::ostream& os, const SLLString& str);
