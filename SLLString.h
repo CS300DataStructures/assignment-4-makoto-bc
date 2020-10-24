@@ -5,7 +5,9 @@
 #include <ostream>
 #include <memory>
 
-// String implementation using a linked list.
+/**
+ * String implementation using a linked list.
+ */
 class SLLString {
 private:
 	class Node {

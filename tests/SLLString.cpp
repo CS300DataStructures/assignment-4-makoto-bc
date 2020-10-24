@@ -31,7 +31,8 @@ TEST(SLLString, stringConstructorAndInsert) {
 	{
 		SLLString str("ab");
 		str.insert(1, 'c');
-		EXPECT_EQ(str, SLLString("acb"));
+		str.insert(2, 'a');
+		EXPECT_EQ(str, SLLString("acab"));
 	}
 }
 
@@ -219,7 +220,7 @@ TEST(SLLString, erase) {
 			'a',
 			{"b"},
 		},
-		{ // 6
+		{ // 7
 			{"aba"},
 			'b',
 			{"aa"},
