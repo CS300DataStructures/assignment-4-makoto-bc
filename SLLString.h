@@ -11,7 +11,7 @@ private:
 	public:
 		Node(char value, std::unique_ptr<Node> next)
 			: value(value)
-			, next(std::move(next)) {}
+			  , next(std::move(next)) {}
 
 		char value;
 		std::unique_ptr<Node> next;
@@ -20,13 +20,14 @@ private:
 public:
 	SLLString()
 		: head(nullptr)
-		, _size(0) {}
+		  , _size(0) {}
 
 	SLLString(const std::string& str); // NOLINT(google-explicit-constructor)
 
 	SLLString(const SLLString& other);
 
-	SLLString(SLLString&& string) : SLLString() {
+	SLLString(SLLString&& string)
+		: SLLString() {
 		std::swap(head, string.head);
 		std::swap(_size, string._size);
 	}

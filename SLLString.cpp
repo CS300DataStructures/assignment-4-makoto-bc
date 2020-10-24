@@ -1,6 +1,7 @@
 #include "SLLString.h"
 
-SLLString::SLLString(const std::string& str) : SLLString() {
+SLLString::SLLString(const std::string& str)
+	: SLLString() {
 	_size = str.size();
 	if (_size == 0) {
 		head = nullptr;
