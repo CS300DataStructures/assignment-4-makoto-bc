@@ -9,7 +9,11 @@ TEST(SLLString, stringConstructorAndInsert) {
 	}
 	{
 		SLLString str;
+		EXPECT_EQ(str.size(), 0);
+		EXPECT_EQ(str.length(), 0);
 		str.insert(0, 'a');
+		EXPECT_EQ(str.size(), 1);
+		EXPECT_EQ(str.length(), 1);
 		EXPECT_EQ(str, SLLString("a"));
 	}
 	{
@@ -260,6 +264,14 @@ TEST(SLLString, getter) {
 	}
 }
 
+TEST(SLLString, comparison) {
+	EXPECT_EQ(SLLString(), SLLString());
+	EXPECT_EQ(SLLString("a"), SLLString("a"));
+	EXPECT_NE(SLLString("a"), SLLString());
+	EXPECT_NE(SLLString(), SLLString("a"));
+	EXPECT_NE(SLLString("a"), SLLString("b"));
+}
+
 TEST(SLLString, concatenate) {
 	struct Test {
 		SLLString a;
@@ -298,5 +310,18 @@ TEST(SLLString, concatenate) {
 	for (size_t i = 0; i < tests.size(); ++i) {
 		tests[i].a += tests[i].b;
 		EXPECT_EQ(tests[i].a, tests[i].expected) << i;
+	}
+}
+
+TEST(SLLString, streamOperator) {
+	{
+		std::stringstream ss;
+		ss << SLLString();
+		EXPECT_EQ(ss.str(), "");
+	}
+	{
+		std::stringstream ss;
+		ss << SLLString("a");
+		EXPECT_EQ(ss.str(), "a");
 	}
 }

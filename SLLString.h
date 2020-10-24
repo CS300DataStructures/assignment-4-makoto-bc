@@ -46,12 +46,7 @@ public:
 	 * Size of this string.
 	 * @see size()
 	 */
-	int length() { // NOLINT(readability-make-member-function-const)
-		if (_size > std::numeric_limits<int>::max()) {
-			throw std::out_of_range("_size is larger than max int");
-		}
-		return static_cast<int>(_size);
-	}
+	int length();
 
 	size_t size() const {
 		return _size;
@@ -100,6 +95,10 @@ public:
 	SLLString& operator=(const SLLString& other);
 
 	bool operator==(const SLLString& rhs) const;
+
+	bool operator!=(const SLLString& rhs) const {
+		return !(*this == rhs);
+	}
 
 	/**
 	 * Concatenates other to the end of this string.

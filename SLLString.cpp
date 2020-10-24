@@ -38,6 +38,13 @@ SLLString::SLLString(const SLLString& other) {
 	}
 }
 
+int SLLString::length() { // NOLINT(readability-make-member-function-const)
+	if (_size > std::numeric_limits<int>::max()) {
+		throw std::out_of_range("_size is larger than max int");
+	}
+	return static_cast<int>(_size);
+}
+
 int SLLString::findSubstring(const SLLString& substring) {
 	if (substring._size == 0) {
 		return 0;
