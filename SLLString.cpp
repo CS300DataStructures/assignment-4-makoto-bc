@@ -1,4 +1,5 @@
 #include "SLLString.h"
+#include <limits>
 
 SLLString::SLLString(const std::string& str) {
 	_size = str.size();
